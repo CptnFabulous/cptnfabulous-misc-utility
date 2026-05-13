@@ -1,0 +1,12 @@
+{
+	"name": "com.cptnfabulous.miscutility",
+	"version": "0.0.1",
+	"displayName": "CptnFabulous' Miscellaneous Utility",
+	"description": "A collection of utility functions generic enough to be reused across multiple projects. Many were originally made for my FPS, but placed here to be used elsewhere and so I can show them off in my portfolio.",
+	"unity": "2022.3",
+	"author": {
+		"name": "Marcus Mouyat",
+		"email": "marcus@mouyat.com",
+		"url": ""
+	}
+}

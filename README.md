@@ -1,2 +1,1 @@
-# cptnfabulous-misc-utility
-
+To install, select the 'Add package from Git URL' option, then copy in 'https://github.com/CptnFabulous/cptnfabulous-misc-utility.git'.
