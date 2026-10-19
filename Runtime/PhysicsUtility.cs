@@ -6,6 +6,8 @@ namespace CptnFabulous.MiscUtility
 {
     public static class PhysicsUtility
     {
+        #region Detection
+
         static Dictionary<int, LayerMask> physicsLayerDictionary = new Dictionary<int, LayerMask>();
 
         public static bool IsLayerInLayerMask(LayerMask mask, int layer) => mask == (mask | (1 << layer));
@@ -28,6 +30,11 @@ namespace CptnFabulous.MiscUtility
 
             return finalMask;
         }
+
+        #endregion
+
+        #region Collisions
+
         public static Vector3 GetAverageCollisionNormal(Collision collision)
         {
             Vector3 normal = Vector3.zero;
@@ -48,5 +55,17 @@ namespace CptnFabulous.MiscUtility
             position /= collision.contactCount;
             return position;
         }
+
+        #endregion
+
+        #region Colliders
+
+        public static Vector3 ClosestPointOnColliders(IList<Collider> colliders, Vector3 point)
+        {
+            Collider closest = CollectionUtility.GetBest(colliders, (c) => Vector3.Distance(point, c.ClosestPoint(point)), true);
+            return closest.ClosestPoint(point);
+        }
+
+        #endregion
     }
 }
