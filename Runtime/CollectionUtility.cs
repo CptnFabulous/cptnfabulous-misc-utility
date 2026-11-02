@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CptnFabulous.MiscUtility
@@ -15,12 +16,15 @@ namespace CptnFabulous.MiscUtility
             }
             return false;
         }
-        public static int IndexOfInArray<T>(IList<T> array, T data) => IndexOfInArray(array, data, 0, array.Count);
-        public static int IndexOfInArray<T>(IList<T> array, T data, int start, int length)
+        public static int IndexOf<T>(this IEnumerable<T> array, T data)
+        {
+            return IndexOf(array, data, 0, array.Count());
+        }
+        public static int IndexOf<T>(this IEnumerable<T> array, T data, int start, int length)
         {
             for (int i = start; i < start + length; i++)
             {
-                if (array[i].Equals(data)) return i;
+                if (array.ElementAt(i).Equals(data)) return i;
             }
             return -1;
         }
@@ -120,15 +124,18 @@ namespace CptnFabulous.MiscUtility
             return false;
         }
 
-        public static void ShuffleList<T>(IList<T> list)
+        #region Re-ordering list
+        public static void Shuffle<T>(this IList<T> list) => Shuffle(list, 0, list.Count);
+        public static void Shuffle<T>(this IList<T> list, int start, int count)
         {
-            for (int i = 0; i < list.Count; i++)
+            int end = start + count;
+            for (int i = start; i < end; i++)
             {
-                int r = UnityEngine.Random.Range(0, list.Count - 1);
+                int r = UnityEngine.Random.Range(start, end);
                 if (r == i) continue;
-                T value = list[i];
+                T swapping = list[i];
                 list[i] = list[r];
-                list[r] = value;
+                list[r] = swapping;
             }
         }
         public static void SortListWithOnePredicate<T>(this List<T> list, System.Func<T, IComparable> obtainValue, bool reverse = false)
