@@ -41,6 +41,14 @@ namespace CptnFabulous.MiscUtility
             }
             return -Vector3Int.one;
         }
+        public static bool DoAnyMeetCriteria<T>(this IEnumerable<T> collection, System.Func<T, bool> criteria)
+        {
+            foreach (T t in collection)
+            {
+                if (criteria.Invoke(t)) return true;
+            }
+            return false;
+        }
         public static void IterateThroughGrid(Vector3Int dimensions, Action<int, int, int> action)
         {
             for (int x = 0; x < dimensions.x; x++)

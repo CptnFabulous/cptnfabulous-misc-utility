@@ -23,6 +23,11 @@ namespace CptnFabulous.MiscUtility
             }
             return c;
         }
+        public static bool TryParseCharToInt(this char c, out int value)
+        {
+            value = (int)char.GetNumericValue(c);
+            return value >= 0;
+        }
 
         public static readonly List<char> uppercaseLetters = new List<char>(new char[26]
         {
