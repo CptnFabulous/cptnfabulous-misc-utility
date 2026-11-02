@@ -6,15 +6,16 @@ namespace CptnFabulous.MiscUtility
 {
     public static class TextUtility
     {
-        public static bool CharMatches(char c, List<char> array)
+        #region Chars
+        public static bool CharMatches(this char c, List<char> array)
         {
             int index = array.IndexOf(c);
             //Debug.Log(c + ", " + array + ", " + WithinArray(index, array.Count));
             return MathUtility.WithinArray(index, array.Count);
         }
-        public static bool IsUppercase(char c) => CharMatches(c, uppercaseLetters);
-        public static bool IsLowercase(char c) => CharMatches(c, lowercaseLetters);
-        public static char Capitalise(char c)
+        public static bool IsUppercase(this char c) => CharMatches(c, uppercaseLetters);
+        public static bool IsLowercase(this char c) => CharMatches(c, lowercaseLetters);
+        public static char Capitalise(this char c)
         {
             int lowercaseIndex = lowercaseLetters.IndexOf(c);
             if (MathUtility.WithinArray(lowercaseIndex, lowercaseLetters.Count))
@@ -87,6 +88,8 @@ namespace CptnFabulous.MiscUtility
         'y',
         'z',
         });
+
+        #endregion
 
         /// <summary>
         /// Formats a name string to start with a capital letter and have spaces.

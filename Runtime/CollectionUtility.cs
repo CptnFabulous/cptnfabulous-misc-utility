@@ -7,7 +7,7 @@ namespace CptnFabulous.MiscUtility
 {
     public static class CollectionUtility
     {
-        public static bool ArrayContains<T>(IEnumerable<T> array, T data)
+        public static bool ArrayContains<T>(this IEnumerable<T> array, T data)
         {
             foreach (T t in array)
             {
@@ -131,7 +131,7 @@ namespace CptnFabulous.MiscUtility
                 list[r] = value;
             }
         }
-        public static void SortListWithOnePredicate<T>(List<T> list, System.Func<T, IComparable> obtainValue, bool reverse = false)
+        public static void SortListWithOnePredicate<T>(this List<T> list, System.Func<T, IComparable> obtainValue, bool reverse = false)
         {
             list.Sort((a, b) =>
             {
@@ -140,7 +140,7 @@ namespace CptnFabulous.MiscUtility
                 return reverse ? _b.CompareTo(_a) : _a.CompareTo(_b);
             });
         }
-        public static void SortListWithNoPredicate<T>(List<T> list, bool reverse = false) where T : IComparable
+        public static void SortListWithNoPredicate<T>(this List<T> list, bool reverse = false) where T : IComparable
         {
             list.Sort((_a, _b) => reverse ? _b.CompareTo(_a) : _a.CompareTo(_b));
         }

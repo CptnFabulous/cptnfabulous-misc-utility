@@ -15,7 +15,11 @@ namespace CptnFabulous.MiscUtility
 
     public static class ComponentUtility
     {
-        public static T GetComponentInParentWhere<T>(Transform target, Func<T, bool> criteria) where T : Component
+        public static T GetComponentInParentWhere<T>(this GameObject target, Func<T, bool> criteria) where T : Component
+        {
+            return target.transform.GetComponentInParentWhere(criteria);
+        }
+        public static T GetComponentInParentWhere<T>(this Transform target, Func<T, bool> criteria) where T : Component
         {
             while (target != null)
             {
@@ -31,7 +35,7 @@ namespace CptnFabulous.MiscUtility
             return null;
         }
 
-        public static Child[] GetImmediateComponentsInChildren<Child, Parent>(Parent parent, ref Child[] cachedData) where Child : Component where Parent : Component
+        public static Child[] GetImmediateComponentsInChildren<Child, Parent>(this Parent parent, ref Child[] cachedData) where Child : Component where Parent : Component
         {
             return GetImmediateComponentsInChildren(parent, ref cachedData, (c) => c.GetComponentInParent<Parent>());
         }
@@ -43,7 +47,7 @@ namespace CptnFabulous.MiscUtility
         /// <param name="parent"></param>
         /// <param name="cachedData"></param>
         /// <returns></returns>
-        public static Child[] GetImmediateComponentsInChildren<Child, Parent>(Parent parent, ref Child[] cachedData, System.Func<Child, Parent> getInParent) where Child : Component where Parent : Component
+        public static Child[] GetImmediateComponentsInChildren<Child, Parent>(this Parent parent, ref Child[] cachedData, System.Func<Child, Parent> getInParent) where Child : Component where Parent : Component
         {
             // Just return cached data if already present
             if (cachedData != null) return cachedData;
