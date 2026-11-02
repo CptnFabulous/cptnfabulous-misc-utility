@@ -8,6 +8,7 @@ namespace CptnFabulous.MiscUtility
 {
     public static class CollectionUtility
     {
+        #region Obtaining data
         public static bool ArrayContains<T>(this IEnumerable<T> array, T data)
         {
             foreach (T t in array)
@@ -53,6 +54,34 @@ namespace CptnFabulous.MiscUtility
             }
             return false;
         }
+        public static T GetBest<T>(System.Func<T, IComparable> criteria, bool reverse, params T[] options) => GetBest(options, criteria, reverse);
+        public static T GetBest<T>(this IList<T> collection, System.Func<T, IComparable> criteria, bool reverse = false)
+        {
+            //if (options == null || options.Length == 0) return default(T);
+
+
+
+            T best = collection[0];
+            IComparable bestValue = criteria.Invoke(best);
+
+            for (int i = 1; i < collection.Count; i++)
+            {
+                T next = collection[i];
+                IComparable nextValue = criteria.Invoke(next);
+
+                int comparison = reverse ? nextValue.CompareTo(bestValue) : bestValue.CompareTo(nextValue);
+                if (comparison < 0)
+                {
+                    best = next;
+                    bestValue = nextValue;
+                }
+            }
+
+            return best;
+        }
+        #endregion
+
+        #region Iterating
         public static void IterateThroughGrid(Vector3Int dimensions, Action<int, int, int> action)
         {
             for (int x = 0; x < dimensions.x; x++)
@@ -123,6 +152,7 @@ namespace CptnFabulous.MiscUtility
 
             return false;
         }
+        #endregion
 
         #region Re-ordering list
         public static void Shuffle<T>(this IList<T> list) => Shuffle(list, 0, list.Count);
@@ -151,30 +181,6 @@ namespace CptnFabulous.MiscUtility
         {
             list.Sort((_a, _b) => reverse ? _b.CompareTo(_a) : _a.CompareTo(_b));
         }
-        public static T GetBest<T>(System.Func<T, IComparable> criteria, bool reverse, params T[] options) => GetBest(options, criteria, reverse);
-        public static T GetBest<T>(IList<T> collection, System.Func<T, IComparable> criteria, bool reverse = false)
-        {
-            //if (options == null || options.Length == 0) return default(T);
-
-
-
-            T best = collection[0];
-            IComparable bestValue = criteria.Invoke(best);
-
-            for (int i = 1; i < collection.Count; i++)
-            {
-                T next = collection[i];
-                IComparable nextValue = criteria.Invoke(next);
-
-                int comparison = reverse ? nextValue.CompareTo(bestValue) : bestValue.CompareTo(nextValue);
-                if (comparison < 0)
-                {
-                    best = next;
-                    bestValue = nextValue;
-                }
-            }
-
-            return best;
-        }
+        #endregion
     }
 }
