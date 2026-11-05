@@ -10,6 +10,7 @@ namespace CptnFabulous.MiscUtility
         SameObject,
         InChild,
         InParent,
+        AddIfAbsent,
         Add
     }
 
@@ -63,7 +64,20 @@ namespace CptnFabulous.MiscUtility
             cachedData = list.ToArray();
             return cachedData;
         }
+        
+        /// <summary>
+        /// Looks for an instance of <typeparamref name="T"/> on a <typeparamref name="GameObject"/>, and adds one if not already present.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static T AddIfAbsent<T>(this GameObject target) where T : Component
+        {
+            bool alreadyExists = target.TryGetComponent(out T existing);
+            if (alreadyExists) return existing;
 
+            return target.AddComponent<T>();
+        }
         public static T AutoCache<T>(ref T cacheValue, GameObject target, ComponentGetType getType = ComponentGetType.SameObject) where T : Component
         {
             if (cacheValue == null)
@@ -72,6 +86,7 @@ namespace CptnFabulous.MiscUtility
                 {
                     ComponentGetType.InChild => target.GetComponentInChildren<T>(),
                     ComponentGetType.InParent => target.GetComponentInParent<T>(),
+                    ComponentGetType.AddIfAbsent => target.AddIfAbsent<T>(),
                     ComponentGetType.Add => target.GetComponent<T>(),
                     _ => target.GetComponent<T>(),
                 };
