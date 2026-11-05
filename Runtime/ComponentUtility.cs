@@ -78,6 +78,35 @@ namespace CptnFabulous.MiscUtility
 
             return target.AddComponent<T>();
         }
+
+        /// <summary>
+        /// Automatically searches for an instance of <typeparamref name="T"/> on <paramref name="target"/>, and caches it to <paramref name="cacheValue"/> so it only needs to be obtained once.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="cacheValue"></param>
+        /// <param name="getType"></param>
+        /// <returns></returns>
+        public static T Cache<T>(this Component target, ref T cacheValue, ComponentGetType getType = ComponentGetType.SameObject) where T : Component
+        {
+            return Cache(target.gameObject, ref cacheValue, getType);
+        }
+        public static T Cache<T>(this GameObject target, ref T cacheValue, ComponentGetType getType = ComponentGetType.SameObject) where T : Component
+        {
+            if (cacheValue != null) return cacheValue;
+
+            cacheValue = getType switch
+            {
+                ComponentGetType.InChild => target.GetComponentInChildren<T>(),
+                ComponentGetType.InParent => target.GetComponentInParent<T>(),
+                ComponentGetType.AddIfAbsent => target.AddIfAbsent<T>(),
+                ComponentGetType.Add => target.AddComponent<T>(),
+                _ => target.GetComponent<T>(),
+            };
+
+            return cacheValue;
+        }
+        [Obsolete]
         public static T AutoCache<T>(ref T cacheValue, GameObject target, ComponentGetType getType = ComponentGetType.SameObject) where T : Component
         {
             if (cacheValue == null)
