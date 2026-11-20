@@ -68,4 +68,89 @@ namespace CptnFabulous.MiscUtility
 
         #endregion
     }
+    /*
+    public static class PhysicsCache
+    {
+        static Dictionary<Rigidbody, Rigidbody> rootDictionary = new Dictionary<Rigidbody, Rigidbody>();
+        static Dictionary<Rigidbody, float> massDictionary = new Dictionary<Rigidbody, float>();
+        static Dictionary<Rigidbody, Rigidbody[]> childDictionary = new Dictionary<Rigidbody, Rigidbody[]>();
+        static Dictionary<Rigidbody, Collider[]> colliderDictionary = new Dictionary<Rigidbody, Collider[]>();
+
+        public static Rigidbody GetRootRigidbody(Rigidbody rb)
+        {
+            if (rb == null) return null;
+
+            if (rootDictionary.TryGetValue(rb, out Rigidbody r)) return r;
+
+            // Check for a joint, and get its connected body.
+            // If neither are found, break the loop.
+            // Whatever was last assigned to 'root' is what we need.
+            Rigidbody root = rb;
+            while (root.TryGetComponent(out Joint j) && j.connectedBody != null)
+            {
+                // If we found a connected body, re-iterate the check until we reach the end of the chain.
+                root = j.connectedBody;
+            }
+            rootDictionary[rb] = root;
+
+            return root;
+        }
+        public static float TotalMassOfConnectedRigidbodies(Rigidbody rb)
+        {
+            if (rb == null) return 1;
+
+            rb = GetRootRigidbody(rb);
+
+            float mass;
+            // If a value is already stored, get that
+            if (massDictionary.TryGetValue(rb, out mass)) return mass;
+
+            // Calculate total mass from child rigidbodies, and cache it to save processing
+            foreach (Rigidbody child in GetChildRigidbodies(rb))
+            {
+                mass += child.mass;
+            }
+            massDictionary[rb] = mass;
+
+            return mass;
+        }
+        public static Vector3 AverageVelocityOfConnectedRigidbodies(Rigidbody rb)
+        {
+            if (rb == null) return Vector3.zero;
+
+            rb = GetRootRigidbody(rb);
+
+            // Calculate total mass from child rigidbodies, and cache it to save processing
+            Vector3 totalVelocity = Vector3.zero;
+            int numberOfBodies = 0;
+            foreach (Rigidbody child in GetChildRigidbodies(rb))
+            {
+                totalVelocity += child.velocity;
+                numberOfBodies++;
+            }
+            totalVelocity /= numberOfBodies;
+
+            return totalVelocity;
+        }
+        public static Rigidbody[] GetChildRigidbodies(Rigidbody target)
+        {
+            target = GetRootRigidbody(target);
+            // Check for pre-cached value
+            if (childDictionary.TryGetValue(target, out var array)) return array;
+            // Find and cache value
+            childDictionary[target] = target.GetComponentsInChildren<Rigidbody>();
+            return childDictionary[target];
+        }
+        public static Collider[] GetChildColliders(Rigidbody target)
+        {
+            target = GetRootRigidbody(target);
+            // Check for pre-cached value
+            if (colliderDictionary.TryGetValue(target, out var array)) return array;
+            // Find and cache value
+            colliderDictionary[target] = target.GetComponentsInChildren<Collider>();
+            return colliderDictionary[target];
+        }
+
+    }
+    */
 }
